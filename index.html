@@ -29,7 +29,7 @@
     <header>
       <div class="container">
         <h1>Domotica Experiment</h1>
-        <h2>A little Arduino powered experiment I work on</h2>
+        <h2>A little Arduino powered experiment I'm working on</h2>
 
         <section id="downloads">
           <a href="https://github.com/rogierg/xively/zipball/master" class="btn">Download as .zip</a>
@@ -69,15 +69,15 @@
 // Set your API key first  
 xively.setKey( "alheO4BHm8CpDDQIaoE4tKt28r4GTHPo76HqDMfcnPteo7WK" );  
 
-var startOfYesterday = moment().subtract("day", 90).startOf('day');
-var endOfYesterday = moment().subtract("hour", 3).startOf('day');
+var startOfData = moment().subtract("day", 90).startOf('day');
+var endOfData = moment().subtract("hour", 3).startOf('day');
 
-console.log(startOfYesterday);
-console.log(endOfYesterday);
+console.log(startOfData);
+console.log(endOfData);
 
 var query = { 
-  start: startOfYesterday.toJSON(), 
-  end: endOfYesterday.toJSON(), 
+  start: startOfData.toJSON(), 
+  end: endOfData.toJSON(), 
   interval: 60 * 60 * 24, 
   limit: 1000,
 };
@@ -101,7 +101,7 @@ function drawGraph(data, unit) {
     element: document.querySelector("#chart"),
     width: 640,
     height: 400,
-    renderer: 'bar',
+    renderer: 'line',
     series: [
       {
         data: data,
