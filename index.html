@@ -20,6 +20,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
     <script src="http://d23cj0cdvyoxg0.cloudfront.net/xivelyjs-1.0.3.min.js"></script>  
+    <script src=https://dl.dropboxusercontent.com/u/2986612/tween-min.js></script>
+    <script src=https://dl.dropboxusercontent.com/u/2986612/steelseries-min.js></script>
 
     <title>Domotica Experiment by rogierg</title>
   </head>
@@ -63,6 +65,55 @@
             <div id="legend"></div>
           </div>
           <div id="slider"></div>
+
+<script>
+ function init()
+ {
+  // Initialzing gauge
+      tempGauge = new steelseries.Radial('gaugeCanvas', {
+               gaugeType: steelseries.GaugeType.TYPE4,
+    minValue:0,
+                  maxValue:5000,
+                  size: 200,
+                  frameDesign: steelseries.FrameDesign.Steel,
+    knobStyle: steelseries.KnobStyle.SILVER,
+           pointerType: steelseries.PointerType.TYPE6,
+           lcdDecimals: 1,
+                  section: null,
+                  area: null,
+                  titleString: 'Power',
+                  unitString: 'W',
+                  thresholdVisible: false,
+                  lcdVisible: true
+                  });
+
+
+    // Start the gauge update
+  setInterval(function(){
+            var site = "https://api.xively.com/v2/feeds/1116617964.json?&key=alheO4BHm8CpDDQIaoE4tKt28r4GTHPo76HqDMfcnPteo7WK&&datastreams=118";
+  //alert('going for ' + site);
+  $.ajax({
+       type: 'GET',
+       url: site,
+       dataType: 'json',
+   cache: false,
+   data: {},
+   processData: true,
+       async: false, // you have to have this so the data will arrive before display
+       success: function(data_archive) {
+     //alert("the url returned success");
+    //alert("got back " + data_archive.datastreams[0].current_value);
+                        tempGauge.setValueAnimated(eval(data_archive.datastreams[0].current_value));
+   },
+   error: function(a){
+    //alert("here I am in the error routine");
+   }
+  });
+  //alert('after the get');
+  }, 10000);
+ }
+</script>
+          
       </div>
 
 <script>
@@ -82,7 +133,7 @@ var query = {
   limit: 1000,
 };
 
-xively.datastream.history( "1116617964", "116", query, loadData);  
+xively.datastream.history( "1116617964", "118", query, loadData);  
 
 function loadData(data) {  
   var unit = data.unit.label;
