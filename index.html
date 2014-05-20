@@ -6,7 +6,6 @@
 
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
     
     <link type="text/css" rel="stylesheet" href="css/graph.css">
     <link type="text/css" rel="stylesheet" href="css/detail.css">
@@ -26,7 +25,7 @@
     <title>Domotica Experiment by rogierg</title>
   </head>
 
-<body>
+<body onload=init()>>
 
     <header>
       <div class="container">
@@ -141,9 +140,9 @@ function drawGraph(data, unit) {
   yAxis.render();
 }
 
+  // Initialzing gauge
  function init()
  {
-  // Initialzing gauge
       tempGauge = new steelseries.Radial('gaugeCanvas', {
                gaugeType: steelseries.GaugeType.TYPE4,
     minValue:0,
@@ -164,8 +163,7 @@ function drawGraph(data, unit) {
     // Start the gauge update
   setInterval(function(){
             var site = "https://api.xively.com/v2/feeds/1116617964.json?&key=alheO4BHm8CpDDQIaoE4tKt28r4GTHPo76HqDMfcnPteo7WK&&datastreams=118";
-  //alert('going for ' + site);
-  $.ajax({
+    $.ajax({
        type: 'GET',
        url: site,
        dataType: 'json',
@@ -174,15 +172,11 @@ function drawGraph(data, unit) {
    processData: true,
        async: false, // you have to have this so the data will arrive before display
        success: function(data_archive) {
-     //alert("the url returned success");
-    //alert("got back " + data_archive.datastreams[0].current_value);
                         tempGauge.setValueAnimated(eval(data_archive.datastreams[0].current_value));
    },
    error: function(a){
-    //alert("here I am in the error routine");
    }
   });
-  //alert('after the get');
   }, 10000);
  }
 </script>
